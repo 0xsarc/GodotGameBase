@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://2r2xorepwlip"]
+
+[ext_resource type="PackedScene" uid="uid://cdk6hwb4hi2wc" path="res://Player/player.tscn" id="1_ndiqr"]
+[ext_resource type="Material" uid="uid://bok1camfpa3l3" path="res://Assets/prototype_dark.material" id="2_gaqdb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yxtyg"]
+
+[sub_resource type="Sky" id="Sky_edr0k"]
+sky_material = SubResource("ProceduralSkyMaterial_yxtyg")
+
+[sub_resource type="Environment" id="Environment_k5onh"]
+background_mode = 2
+sky = SubResource("Sky_edr0k")
+
+[node name="World" type="Node3D" unique_id=202102310]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2138459930]
+environment = SubResource("Environment_k5onh")
+
+[node name="DirectionalLight3d" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1531102925]
+transform = Transform3D(-0.678961, 0.262875, -0.685499, -0.027831, 0.923814, 0.38183, 0.733646, 0.278326, -0.619918, 0, 6.83834, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." unique_id=216504803 instance=ExtResource("1_ndiqr")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 5, 4.5, 5)
+coyote_time = 0.2
+jump_buffer = 0.15
+
+[node name="SeeCast" type="RayCast3D" parent="Player" unique_id=1283065089]
+transform = Transform3D(0.38233274, 0.044163764, -1.21434, -0.66286135, -0.037936337, -0.7009465, -0.02329275, 1.8045056, 0.014984012, 0, 1.5733347, 0)
+
+[node name="Platform" type="CSGCombiner3D" parent="." unique_id=1332435209]
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Platform" unique_id=1962451189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+size = Vector3(25, 0.5, 25)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Platform" unique_id=564414639]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 10, -0.277339, -5.23999)
+size = Vector3(5, 5, 14)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Platform" unique_id=1623919935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 2, 6.5)
+size = Vector3(12, 5, 12)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Platform" unique_id=870899094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 4, 6.5)
+size = Vector3(6, 1, 12)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="Platform" unique_id=516244937]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 9)
+size = Vector3(5, 1, 5)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="Platform" unique_id=317047917]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 1)
+size = Vector3(1, 4, 1)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="Platform" unique_id=1257958797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 12)
+size = Vector3(1, 4, 1)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Platform" unique_id=1442792767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, -0.36133766, -0.5)
+size = Vector3(2, 5, 2)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Platform/CSGBox3D9" unique_id=936995852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1201458, 0.21452427, -1.7384048)
+size = Vector3(2, 5, 2)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Platform" unique_id=1730074290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -0.1962328, -0.5)
+size = Vector3(2, 4, 2)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="Platform" unique_id=423347175]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.049609184, -0.5)
+size = Vector3(2, 3, 2)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="Platform" unique_id=1495278271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.015074968, -0.5)
+size = Vector3(2, 2, 2)
+material = ExtResource("2_gaqdb")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="Platform" unique_id=1050895050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -2.5)
+size = Vector3(2, 1, 2)
+material = ExtResource("2_gaqdb")
