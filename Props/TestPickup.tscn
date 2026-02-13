@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cc2wnqj4jwqes"]
 
-[ext_resource type="Script" uid="uid://bctc1t2sak82w" path="res://Props/test_pickup.gd" id="1_fbwu3"]
+[ext_resource type="Script" uid="uid://cmfob7ubrgbql" path="res://Items/PickupItem.gd" id="1_fbwu3"]
+[ext_resource type="AudioStream" uid="uid://cf7tgn2lbfug1" path="res://Assets/Sounds/interact_sound.mp3" id="2_kuq6v"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_u786j"]
 
@@ -8,6 +9,7 @@
 
 [node name="Node3D" type="Node3D" unique_id=626138413 groups=["interactable"]]
 script = ExtResource("1_fbwu3")
+pickup_sound = ExtResource("2_kuq6v")
 
 [node name="TestPickup" type="Area3D" parent="." unique_id=700046228]
 collision_layer = 2
