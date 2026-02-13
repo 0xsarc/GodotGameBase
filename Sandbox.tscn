@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cdk6hwb4hi2wc" path="res://Player/player.tscn" id="1_ndiqr"]
 [ext_resource type="Material" uid="uid://bok1camfpa3l3" path="res://Assets/prototype_dark.material" id="2_gaqdb"]
+[ext_resource type="PackedScene" uid="uid://cc2wnqj4jwqes" path="res://Props/TestPickup.tscn" id="3_jgjqi"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yxtyg"]
 
@@ -25,9 +26,6 @@ shadow_enabled = true
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 5, 4.5, 5)
 coyote_time = 0.2
 jump_buffer = 0.15
-
-[node name="SeeCast" type="RayCast3D" parent="Player" unique_id=1283065089]
-transform = Transform3D(0.38233274, 0.044163764, -1.21434, -0.66286135, -0.037936337, -0.7009465, -0.02329275, 1.8045056, 0.014984012, 0, 1.5733347, 0)
 
 [node name="Platform" type="CSGCombiner3D" parent="." unique_id=1332435209]
 use_collision = true
@@ -96,3 +94,6 @@ material = ExtResource("2_gaqdb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -2.5)
 size = Vector3(2, 1, 2)
 material = ExtResource("2_gaqdb")
+
+[node name="Node3D" parent="." unique_id=626138413 instance=ExtResource("3_jgjqi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3254118, 5.5, 2.6072626)
