@@ -6,5 +6,6 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	pass
-func interact(player: Node) -> void:
+func interact(_player: Node) -> void:
 	print("FUNCIONOU CARALHO")
+	visible = false
