@@ -9,6 +9,8 @@ class_name PickupItem
 ## - sem criar nodes dinamicamente
 ## - zero erro
 ## ============================================================
+@export var item_id: String = "item"
+@export var amount: int = 1
 
 @export var destroy_on_pickup: bool = true
 @export var hide_only: bool = false
@@ -27,10 +29,18 @@ func _ready() -> void:
 	add_child(_audio_player)
 
 
-func interact(_player: Node) -> void:
-	print("PICKUP:", name)
-	await _play_sound()
+func interact(player: Node) -> void:
+	print("PICKUP:", item_id)
+
+	# 🔥 adiciona ao inventário do player
+	if player.has_node("Inventory"):
+		var inv = player.get_node("Inventory")
+		inv.add(item_id, amount)
+
+	_play_sound()
+
 	_apply_removal()
+
 
 
 # ============================================================

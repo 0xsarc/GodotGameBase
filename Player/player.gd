@@ -26,6 +26,12 @@ class_name Player
 @export var interact_mask: int = 2 # por padrão, layer 2
 @export var interact_action: StringName = &"interact_button"
 
+
+var inventory: Inventory
+var inventory_ui: InventoryUI
+
+
+
 var _bob_t: float = 0.0
 var _camera_base_y: float = 0.0
 var _camera_base_x: float = 0.0
@@ -50,6 +56,17 @@ var jump_vel: Vector3
 
 
 func _ready() -> void:
+	inventory = Inventory.new()
+	add_child(inventory)
+
+	inventory_ui = InventoryUI.new()
+	add_child(inventory_ui)
+
+	inventory_ui.bind_inventory(inventory)
+
+
+
+
 	_camera_base_y = camera.position.y
 	_camera_base_x = camera.position.x
 	camera.fov = base_fov
