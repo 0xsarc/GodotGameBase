@@ -21,6 +21,11 @@ class_name Player
 @export_range(0.0, 0.3, 0.005) var bob_amount_sprint: float = 0.07
 @export_range(0.1, 30.0, 0.1) var bob_speed: float = 10.0
 
+# Interação
+@export_range(0.5, 6.0, 0.1) var interact_distance: float = 2.5
+@export var interact_mask: int = 2 # por padrão, layer 2
+@export var interact_action: StringName = &"interact_button"
+
 var _bob_t: float = 0.0
 var _camera_base_y: float = 0.0
 var _camera_base_x: float = 0.0
@@ -33,39 +38,120 @@ var mouse_captured: bool = false
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var move_dir: Vector2 # Input direction for movement
-var look_dir: Vector2 # Input direction for look/aim
+var move_dir: Vector2
+var look_dir: Vector2
 
-var walk_vel: Vector3 # Walking velocity
-var grav_vel: Vector3 # Gravity velocity
-var jump_vel: Vector3 # Jumping velocity
+var walk_vel: Vector3
+var grav_vel: Vector3
+var jump_vel: Vector3
 
 @onready var camera: Camera3D = $Camera
+@onready var interact_ray: RayCast3D = get_node_or_null("Camera/RayCast3D") as RayCast3D
+
 
 func _ready() -> void:
 	_camera_base_y = camera.position.y
 	_camera_base_x = camera.position.x
 	camera.fov = base_fov
+
+	_ensure_interact_ray()
+	_configure_interact_ray()
+
 	capture_mouse()
 
+func _ensure_interact_ray() -> void:
+	if interact_ray != null:
+		return
 
-func _interact():
-	if not $Camera/RayCast3D.is_colliding(): return
-	var obj = $Camera/RayCast3D.get_collider()
-	if obj.has_method("interact"):
-		obj.interact(self)
+	interact_ray = RayCast3D.new()
+	interact_ray.name = "RayCast3D"
+	camera.add_child(interact_ray)
 
+	var scene := get_tree().current_scene
+	if scene != null:
+		interact_ray.owner = scene
+
+func _configure_interact_ray() -> void:
+	if interact_ray == null:
+		return
+
+	interact_ray.enabled = true
+	interact_ray.exclude_parent = true
+	interact_ray.collide_with_areas = true
+	interact_ray.collide_with_bodies = true
+	interact_ray.collision_mask = interact_mask
+	interact_ray.target_position = Vector3(0, 0, -interact_distance)
+
+func _get_interactable_from_collider(collider: Object) -> Object:
+	if collider == null:
+		return null
+
+	if collider.has_method("interact"):
+		return collider
+
+	if collider is Node:
+		var p: Node = (collider as Node).get_parent()
+		if p != null and p.has_method("interact"):
+			return p
+		if p != null:
+			var pp: Node = p.get_parent()
+			if pp != null and pp.has_method("interact"):
+				return pp
+
+	return null
+
+func _is_aiming_interactable() -> bool:
+	if interact_ray == null:
+		return false
+
+	interact_ray.force_raycast_update()
+	if not interact_ray.is_colliding():
+		return false
+
+	var collider := interact_ray.get_collider()
+	return _get_interactable_from_collider(collider) != null
+
+func _interact() -> void:
+	if interact_ray == null:
+		return
+
+	interact_ray.force_raycast_update()
+	if not interact_ray.is_colliding():
+		return
+
+	var collider := interact_ray.get_collider()
+	var interactable := _get_interactable_from_collider(collider)
+	if interactable != null:
+		interactable.call("interact", self)
 
 func _unhandled_input(event: InputEvent) -> void:
+	var aiming_interactable := _is_aiming_interactable()
+
+	var pressed_interact := false
+	if aiming_interactable:
+		if InputMap.has_action(interact_action):
+			pressed_interact = Input.is_action_just_pressed(interact_action)
+		else:
+			# fallback: tecla E
+			if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E:
+				pressed_interact = true
+
+	if pressed_interact:
+		_interact()
+
 	if event is InputEventMouseMotion:
 		look_dir = event.relative * 0.001
 		if mouse_captured:
 			_rotate_camera()
+
 	if Input.is_action_just_pressed(&"exit"):
 		get_tree().quit()
 
 func _physics_process(delta: float) -> void:
-	# coyote + jump buffer
+	if interact_ray != null:
+		interact_ray.collision_mask = interact_mask
+		interact_ray.target_position = Vector3(0, 0, -interact_distance)
+
 	_coyote_t = coyote_time if is_on_floor() else max(_coyote_t - delta, 0.0)
 	_jump_buf_t = (jump_buffer if Input.is_action_just_pressed(&"jump") else max(_jump_buf_t - delta, 0.0))
 
