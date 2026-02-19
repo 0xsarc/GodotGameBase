@@ -12,21 +12,6 @@ sky_material = SubResource("ProceduralSkyMaterial_yxtyg")
 background_mode = 2
 sky = SubResource("Sky_edr0k")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(44, 0.5, 42)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_porch"]
-size = Vector3(8, 0.4, 5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_second_floor"]
-size = Vector3(30, 0.5, 24)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_basement_floor"]
-size = Vector3(28, 0.5, 22)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_attic_path"]
-size = Vector3(4, 0.25, 16)
-
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -34,14 +19,13 @@ environment = SubResource("Environment_k5onh")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.842255, -0.273519, 0.463903, 0, 0.861561, 0.507654, -0.539084, -0.427526, 0.725661, 0, 9, 0)
-scale = Vector3(1, 1, 1)
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 18)
 
 [node name="HouseBlockout" type="CSGCombiner3D" parent="."]
-use_collision = false
+use_collision = true
 
 [node name="GroundFloor" type="Node3D" parent="HouseBlockout"]
 
@@ -209,48 +193,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 9.5, -2)
 
 [node name="AtticExitHint" type="Marker3D" parent="HouseBlockout/Attic"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 10, 10.5, 6)
-
-[node name="Collision" type="Node3D" parent="."]
-
-[node name="GroundFloorCollision" type="StaticBody3D" parent="Collision"]
-collision_layer = 1
-collision_mask = 1
-
-[node name="GroundFloorShape" type="CollisionShape3D" parent="Collision/GroundFloorCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-shape = SubResource("BoxShape3D_ground")
-
-[node name="EntrancePorchCollision" type="StaticBody3D" parent="Collision"]
-collision_layer = 1
-collision_mask = 1
-
-[node name="EntrancePorchShape" type="CollisionShape3D" parent="Collision/EntrancePorchCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 20)
-shape = SubResource("BoxShape3D_porch")
-
-[node name="SecondFloorCollision" type="StaticBody3D" parent="Collision"]
-collision_layer = 1
-collision_mask = 1
-
-[node name="SecondFloorShape" type="CollisionShape3D" parent="Collision/SecondFloorCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.05, 1)
-shape = SubResource("BoxShape3D_second_floor")
-
-[node name="BasementFloorCollision" type="StaticBody3D" parent="Collision"]
-collision_layer = 1
-collision_mask = 1
-
-[node name="BasementFloorShape" type="CollisionShape3D" parent="Collision/BasementFloorCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.05, -2)
-shape = SubResource("BoxShape3D_basement_floor")
-
-[node name="AtticPathCollision" type="StaticBody3D" parent="Collision"]
-collision_layer = 1
-collision_mask = 1
-
-[node name="AtticPathShape" type="CollisionShape3D" parent="Collision/AtticPathCollision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.3, 0)
-shape = SubResource("BoxShape3D_attic_path")
 
 [node name="ProgressionGates" type="Node3D" parent="."]
 
