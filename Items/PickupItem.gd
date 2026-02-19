@@ -1,14 +1,23 @@
 extends Node3D
 class_name PickupItem
 
-## ============================================================
-## PickupItem.gd (versão correta FINAL)
-##
-## - você arrasta .wav/.ogg/.mp3 no Inspector
-## - usa AudioStreamPlayer3D interno
-## - sem criar nodes dinamicamente
-## - zero erro
-## ============================================================
+const PLACEHOLDER_ICON: Texture2D = preload("res://Assets/DarkPrototypeTexture.png")
+
+const ITEM_DB := {
+	"moeda": {
+		"name": "Moeda",
+		"icon": PLACEHOLDER_ICON
+	},
+	"chave": {
+		"name": "Chave",
+		"icon": PLACEHOLDER_ICON
+	},
+	"item": {
+		"name": "Item",
+		"icon": PLACEHOLDER_ICON
+	}
+}
+
 @export var item_id: String = "item"
 @export var amount: int = 1
 
@@ -18,34 +27,29 @@ class_name PickupItem
 
 @export var pickup_sound: AudioStream
 
-@export var animation_player: AnimationPlayer
-@export var pickup_animation: String = "pickup"
 
-var _audio_player: AudioStreamPlayer3D
-
-
-func _ready() -> void:
-	_audio_player = AudioStreamPlayer3D.new()
-	add_child(_audio_player)
+static func get_item_data(id: String) -> Dictionary:
+	return ITEM_DB.get(id, ITEM_DB["item"])
 
 
 func interact(player: Node) -> void:
-	print("PICKUP:", item_id)
+	var inv: Inventory = null
+	if player is Player:
+		inv = (player as Player).inventory
+	elif player.has_node("Inventory"):
+		inv = player.get_node("Inventory") as Inventory
 
-	# 🔥 adiciona ao inventário do player
-	if player.has_node("Inventory"):
-		var inv = player.get_node("Inventory")
-		inv.add(item_id, amount)
+	if inv == null:
+		push_warning("Interação sem inventário no player")
+		return
+
+	if not inv.add(item_id, amount):
+		push_warning("Inventário cheio: não foi possível pegar %s" % item_id)
+		return
 
 	_play_sound()
-
 	_apply_removal()
 
-
-
-# ============================================================
-# SOM (CORRETO)
-# ============================================================
 
 func _play_sound() -> void:
 	if pickup_sound == null:
@@ -56,17 +60,10 @@ func _play_sound() -> void:
 	get_tree().current_scene.add_child(player)
 	player.global_position = global_position
 	player.play()
-
 	player.finished.connect(player.queue_free)
 
 
-
-# ============================================================
-# REMOÇÃO
-# ============================================================
-
 func _apply_removal() -> void:
-
 	if hide_only:
 		visible = false
 
@@ -78,7 +75,8 @@ func _apply_removal() -> void:
 
 
 func _disable_collisions(node: Node) -> void:
+	if node is CollisionShape3D:
+		(node as CollisionShape3D).set_deferred("disabled", true)
+
 	for child in node.get_children():
-		if child is CollisionObject3D:
-			child.set_deferred("disabled", true)
 		_disable_collisions(child)
