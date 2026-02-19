@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://2r2xorepwlip"]
 
-[ext_resource type="PackedScene" uid="uid://cdk6hwb4hi2wc" path="res://Player/player.tscn" id="1_ndiqr"]
-[ext_resource type="Material" uid="uid://bok1camfpa3l3" path="res://Assets/prototype_dark.material" id="2_gaqdb"]
-[ext_resource type="PackedScene" uid="uid://cc2wnqj4jwqes" path="res://Props/TestPickup.tscn" id="3_jgjqi"]
+[ext_resource type="PackedScene" uid="uid://cdk6hwb4hi2wc" path="res://Player/player.tscn" id="1_player"]
+[ext_resource type="Material" uid="uid://bok1camfpa3l3" path="res://Assets/prototype_dark.material" id="2_mat"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yxtyg"]
 
@@ -13,87 +12,181 @@ sky_material = SubResource("ProceduralSkyMaterial_yxtyg")
 background_mode = 2
 sky = SubResource("Sky_edr0k")
 
-[node name="World" type="Node3D" unique_id=202102310]
+[node name="World" type="Node3D"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2138459930]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_k5onh")
 
-[node name="DirectionalLight3d" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1531102925]
-transform = Transform3D(-0.678961, 0.262875, -0.685499, -0.027831, 0.923814, 0.38183, 0.733646, 0.278326, -0.619918, 0, 6.83834, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.842255, -0.273519, 0.463903, 0, 0.861561, 0.507654, -0.539084, -0.427526, 0.725661, 0, 9, 0)
 shadow_enabled = true
 
-[node name="Player" parent="." unique_id=216504803 instance=ExtResource("1_ndiqr")]
-transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 5, 4.5, 5)
-coyote_time = 0.2
-jump_buffer = 0.15
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 18)
 
-[node name="Platform" type="CSGCombiner3D" parent="." unique_id=1332435209]
+[node name="HouseBlockout" type="CSGCombiner3D" parent="."]
 use_collision = true
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Platform" unique_id=1962451189]
+[node name="GroundFloor" type="Node3D" parent="HouseBlockout"]
+
+[node name="GroundMain" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-size = Vector3(25, 0.5, 25)
-material = ExtResource("2_gaqdb")
+size = Vector3(44, 0.5, 42)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D7" type="CSGBox3D" parent="Platform" unique_id=564414639]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 10, -0.277339, -5.23999)
-size = Vector3(5, 5, 14)
-material = ExtResource("2_gaqdb")
+[node name="EntrancePorch" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 20)
+size = Vector3(8, 0.4, 5)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="Platform" unique_id=1623919935]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 2, 6.5)
-size = Vector3(12, 5, 12)
-material = ExtResource("2_gaqdb")
+[node name="HubFloor" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 4)
+size = Vector3(10, 0.2, 10)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D8" type="CSGBox3D" parent="Platform" unique_id=870899094]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 4, 6.5)
-size = Vector3(6, 1, 12)
-material = ExtResource("2_gaqdb")
+[node name="LeftWingFloor" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.05, 4)
+size = Vector3(14, 0.2, 24)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D16" type="CSGBox3D" parent="Platform" unique_id=516244937]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 9)
-size = Vector3(5, 1, 5)
-material = ExtResource("2_gaqdb")
+[node name="RightWingFloor" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.05, 4)
+size = Vector3(14, 0.2, 24)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D14" type="CSGBox3D" parent="Platform" unique_id=317047917]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 1)
-size = Vector3(1, 4, 1)
-material = ExtResource("2_gaqdb")
+[node name="GroundWalls" type="Node3D" parent="HouseBlockout/GroundFloor"]
 
-[node name="CSGBox3D15" type="CSGBox3D" parent="Platform" unique_id=1257958797]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 12)
-size = Vector3(1, 4, 1)
-material = ExtResource("2_gaqdb")
+[node name="NorthWall" type="CSGBox3D" parent="HouseBlockout/GroundFloor/GroundWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -11)
+size = Vector3(36, 4, 0.5)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D9" type="CSGBox3D" parent="Platform" unique_id=1442792767]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, -0.36133766, -0.5)
-size = Vector3(2, 5, 2)
-material = ExtResource("2_gaqdb")
+[node name="SouthWall" type="CSGBox3D" parent="HouseBlockout/GroundFloor/GroundWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 19)
+size = Vector3(36, 4, 0.5)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D9" type="CSGBox3D" parent="Platform/CSGBox3D9" unique_id=936995852]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1201458, 0.21452427, -1.7384048)
-size = Vector3(2, 5, 2)
-material = ExtResource("2_gaqdb")
+[node name="WestWall" type="CSGBox3D" parent="HouseBlockout/GroundFloor/GroundWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 2, 4)
+size = Vector3(0.5, 4, 30)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D10" type="CSGBox3D" parent="Platform" unique_id=1730074290]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, -0.1962328, -0.5)
-size = Vector3(2, 4, 2)
-material = ExtResource("2_gaqdb")
+[node name="EastWall" type="CSGBox3D" parent="HouseBlockout/GroundFloor/GroundWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 2, 4)
+size = Vector3(0.5, 4, 30)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D11" type="CSGBox3D" parent="Platform" unique_id=423347175]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.049609184, -0.5)
-size = Vector3(2, 3, 2)
-material = ExtResource("2_gaqdb")
+[node name="StairToSecondFloor" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 0.838671, -0.544639, 0, 0.544639, 0.838671, 0, 2.2, -0.5)
+size = Vector3(4, 0.5, 10)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D12" type="CSGBox3D" parent="Platform" unique_id=1495278271]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.015074968, -0.5)
-size = Vector3(2, 2, 2)
-material = ExtResource("2_gaqdb")
+[node name="BasementStair" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 0.777146, 0.62932, 0, -0.62932, 0.777146, 2.5, -2, 0)
+size = Vector3(3, 0.5, 8)
+material = ExtResource("2_mat")
 
-[node name="CSGBox3D13" type="CSGBox3D" parent="Platform" unique_id=1050895050]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -2.5)
-size = Vector3(2, 1, 2)
-material = ExtResource("2_gaqdb")
+[node name="SecondFloor" type="Node3D" parent="HouseBlockout"]
 
-[node name="Node3D" parent="." unique_id=626138413 instance=ExtResource("3_jgjqi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3254118, 5.5, 2.6072626)
+[node name="SecondFloorBase" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.05, 1)
+size = Vector3(30, 0.5, 24)
+material = ExtResource("2_mat")
+
+[node name="UpperUPathNorth" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.15, -8)
+size = Vector3(22, 0.2, 4)
+material = ExtResource("2_mat")
+
+[node name="UpperUPathLeft" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5.15, 1)
+size = Vector3(4, 0.2, 18)
+material = ExtResource("2_mat")
+
+[node name="UpperUPathRight" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 5.15, 1)
+size = Vector3(4, 0.2, 18)
+material = ExtResource("2_mat")
+
+[node name="ChildRoomFloor" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 5.05, 7.5)
+size = Vector3(7, 0.5, 7)
+material = ExtResource("2_mat")
+
+[node name="GuestRoomFloor" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 5.05, 7.5)
+size = Vector3(7, 0.5, 7)
+material = ExtResource("2_mat")
+
+[node name="BathroomFloor" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 5.05, -4.5)
+size = Vector3(8, 0.5, 6)
+material = ExtResource("2_mat")
+
+[node name="MasterRoomFloor" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 5.05, -4.5)
+size = Vector3(8, 0.5, 8)
+material = ExtResource("2_mat")
+
+[node name="Basement" type="Node3D" parent="HouseBlockout"]
+
+[node name="BasementMainFloor" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.05, -2)
+size = Vector3(28, 0.5, 22)
+material = ExtResource("2_mat")
+
+[node name="BasementCorridor" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.95, -2)
+size = Vector3(5, 0.2, 20)
+material = ExtResource("2_mat")
+
+[node name="GeneratorRoomFloor" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -4.95, 2)
+size = Vector3(8, 0.2, 8)
+material = ExtResource("2_mat")
+
+[node name="ToolStorageFloor" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, -4.95, 2)
+size = Vector3(8, 0.2, 8)
+material = ExtResource("2_mat")
+
+[node name="ColdCellarFloor" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -4.95, -8)
+size = Vector3(8, 0.2, 6)
+material = ExtResource("2_mat")
+
+[node name="SecretRoomFloor" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, -4.95, -8)
+size = Vector3(8, 0.2, 6)
+material = ExtResource("2_mat")
+
+[node name="BasementServiceStairs" type="CSGBox3D" parent="HouseBlockout/Basement"]
+transform = Transform3D(1, 0, 0, 0, 0.777146, -0.62932, 0, 0.62932, 0.777146, 13, -0.8, 5)
+size = Vector3(3, 0.5, 7)
+material = ExtResource("2_mat")
+
+[node name="Attic" type="Node3D" parent="HouseBlockout"]
+
+[node name="AtticPath" type="CSGBox3D" parent="HouseBlockout/Attic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.3, 0)
+size = Vector3(4, 0.25, 16)
+material = ExtResource("2_mat")
+
+[node name="AtticClimaxFloor" type="CSGBox3D" parent="HouseBlockout/Attic"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 9.25, -2)
+size = Vector3(6, 0.25, 6)
+material = ExtResource("2_mat")
+
+[node name="ProgressionGates" type="Node3D" parent="."]
+
+[node name="Gate_01_BasementToolRequired" type="Marker3D" parent="ProgressionGates"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.8)
+
+[node name="Gate_02_FuseForGenerator" type="Marker3D" parent="ProgressionGates"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -1.5, 2)
+
+[node name="Gate_03_MedallionOpensMasterAndSecret" type="Marker3D" parent="ProgressionGates"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 6.5, -1.2)
+
+[node name="Gate_04_AtticKeyForFinal" type="Marker3D" parent="ProgressionGates"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.5, -8.5)
