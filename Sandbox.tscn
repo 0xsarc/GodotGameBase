@@ -14,141 +14,196 @@ sky = SubResource("Sky_edr0k")
 
 [node name="World" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_k5onh")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.842255, -0.273519, 0.463903, 0, 0.861561, 0.507654, -0.539084, -0.427526, 0.725661, 0, 9, 0)
 shadow_enabled = true
 
+[node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 18)
-collision_layer = 3
 
+[node name="HouseBlockout" type="CSGCombiner3D" parent="."]
 use_collision = true
 
+[node name="GroundFloor" type="Node3D" parent="HouseBlockout"]
 
+[node name="GroundBase" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 size = Vector3(44, 0.5, 42)
 material = ExtResource("2_mat")
 
+[node name="EntrancePorch" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 20)
 size = Vector3(8, 0.4, 5)
 material = ExtResource("2_mat")
 
+[node name="CentralHallHub" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+size = Vector3(10, 4, 10)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="LeftSocialWing" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 2, 4)
-operation = 2
-material = ExtResource("2_mat")
-
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 2, 4)
-operation = 2
 size = Vector3(16, 4, 24)
+operation = 2
 material = ExtResource("2_mat")
 
+[node name="RightServiceWing" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 2, 4)
+size = Vector3(16, 4, 24)
+operation = 2
+material = ExtResource("2_mat")
+
+[node name="GroundRoof" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.25, 4)
 size = Vector3(36, 0.5, 30)
 material = ExtResource("2_mat")
 
+[node name="StairToSecondFloor" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 0.838671, -0.544639, 0, 0.544639, 0.838671, 0, 2.2, -0.5)
 size = Vector3(4, 0.5, 10)
 material = ExtResource("2_mat")
 
+[node name="BasementDoorLock" type="CSGBox3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.8)
 size = Vector3(2.5, 2.4, 0.5)
 material = ExtResource("2_mat")
 
+[node name="HallClockPuzzleSpot" type="Marker3D" parent="HouseBlockout/GroundFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.8, 8.2)
 
+[node name="GroundShortcuts" type="Node3D" parent="HouseBlockout/GroundFloor"]
 
+[node name="BookshelfShortcut" type="CSGBox3D" parent="HouseBlockout/GroundFloor/GroundShortcuts"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1.2, -5)
 size = Vector3(1.8, 2.4, 0.5)
 material = ExtResource("2_mat")
 
+[node name="LaundryServiceDoor" type="CSGBox3D" parent="HouseBlockout/GroundFloor/GroundShortcuts"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2, 1.2, 1)
 size = Vector3(0.5, 2.4, 2)
 material = ExtResource("2_mat")
 
+[node name="SecondFloor" type="Node3D" parent="HouseBlockout"]
 
+[node name="SecondFloorShell" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 1)
 size = Vector3(30, 5, 24)
 material = ExtResource("2_mat")
 
+[node name="UpperUCorridor" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 1)
+size = Vector3(22, 3.6, 16)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="ChildRoom" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 6.5, 7.8)
+size = Vector3(8, 3.6, 7)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="GuestRoom" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 6.5, 7.8)
+size = Vector3(8, 3.6, 7)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="UpperBathroom" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 6.5, -4.8)
+size = Vector3(7, 3.6, 5.5)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="MasterBedroom" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 6.5, -4.8)
+size = Vector3(9, 3.6, 8)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="FragileFloorDrop" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 5.05, 0)
 size = Vector3(2, 0.1, 2)
 material = ExtResource("2_mat")
 
+[node name="AtticHatchLock" type="CSGBox3D" parent="HouseBlockout/SecondFloor"]
 transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871558, 0, -0.0871558, 0.996195, 0, 8.9, -8.5)
 size = Vector3(2.5, 0.4, 2.5)
 material = ExtResource("2_mat")
 
+[node name="Basement" type="Node3D" parent="HouseBlockout"]
 
+[node name="BasementShell" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, -2)
 size = Vector3(28, 5, 22)
 material = ExtResource("2_mat")
 
+[node name="BasementMainCorridor" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, -2)
+size = Vector3(5, 3.5, 20)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="GeneratorRoom" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -2.5, 2)
+size = Vector3(8, 3.5, 8)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="ToolStorage" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, -2.5, 2)
+size = Vector3(8, 3.5, 8)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="ColdCellar" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -2.5, -8)
+size = Vector3(8, 3.5, 6)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="SecretRitualRoom" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, -2.5, -8)
+size = Vector3(8, 3.5, 6)
 operation = 2
 material = ExtResource("2_mat")
 
+[node name="BasementServiceStairs" type="CSGBox3D" parent="HouseBlockout/Basement"]
 transform = Transform3D(1, 0, 0, 0, 0.777146, -0.62932, 0, 0.62932, 0.777146, 13, -0.8, 5)
 size = Vector3(3, 0.5, 7)
 material = ExtResource("2_mat")
 
+[node name="Attic" type="Node3D" parent="HouseBlockout"]
 
+[node name="AtticShell" type="CSGBox3D" parent="HouseBlockout/Attic"]
 transform = Transform3D(1, 0, 0, 0, 0.819152, -0.573576, 0, 0.573576, 0.819152, 0, 10.5, 0)
 size = Vector3(26, 3, 18)
 material = ExtResource("2_mat")
 
+[node name="AtticPath" type="CSGBox3D" parent="HouseBlockout/Attic"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.3, 0)
 size = Vector3(4, 0.2, 16)
 material = ExtResource("2_mat")
 
+[node name="AtticClimaxZone" type="Marker3D" parent="HouseBlockout/Attic"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 9.5, -2)
 
+[node name="AtticExitHint" type="Marker3D" parent="HouseBlockout/Attic"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 10, 10.5, 6)
 
+[node name="ProgressionGates" type="Node3D" parent="."]
 
+[node name="Gate_01_BasementToolRequired" type="Marker3D" parent="ProgressionGates"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.8)
 
+[node name="Gate_02_FuseForGenerator" type="Marker3D" parent="ProgressionGates"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, -1.5, 2)
 
+[node name="Gate_03_MedallionOpensMasterAndSecret" type="Marker3D" parent="ProgressionGates"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 6.5, -1.2)
 
+[node name="Gate_04_AtticKeyForFinal" type="Marker3D" parent="ProgressionGates"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.5, -8.5)
