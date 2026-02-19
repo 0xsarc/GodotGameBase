@@ -26,6 +26,10 @@ class_name Player
 @export var interact_mask: int = 2 # por padrão, layer 2
 @export var interact_action: StringName = &"interact"
 @export var inventory_toggle_action: StringName = &"inventory_toggle"
+@export var dev_spawn_item_action: StringName = &"dev_spawn_item"
+@export var dev_spawn_scene: PackedScene = preload("res://Props/TestPickup.tscn")
+@export_range(0.5, 10.0, 0.1) var dev_spawn_distance: float = 1.5
+@export_range(0.05, 1.0, 0.05) var dev_spawn_surface_offset: float = 0.2
 
 
 var inventory: Inventory
@@ -69,6 +73,9 @@ func _ready() -> void:
 
 	if not InputMap.has_action(inventory_toggle_action):
 		InputMap.add_action(inventory_toggle_action)
+
+	if not InputMap.has_action(dev_spawn_item_action):
+		InputMap.add_action(dev_spawn_item_action)
 
 	_camera_base_y = camera.position.y
 	_camera_base_x = camera.position.x
@@ -171,8 +178,53 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			capture_mouse()
 
+	if InputMap.has_action(dev_spawn_item_action) and Input.is_action_just_pressed(dev_spawn_item_action):
+		_spawn_dev_item()
+
 	if Input.is_action_just_pressed(&"exit"):
 		get_tree().quit()
+
+func _spawn_dev_item() -> void:
+	if dev_spawn_scene == null:
+		return
+
+	var spawned := dev_spawn_scene.instantiate()
+	if not spawned is Node3D:
+		spawned.queue_free()
+		return
+
+	var item := spawned as Node3D
+	var spawn_position := _get_dev_spawn_position()
+	item.global_position = spawn_position
+
+	var root := get_tree().current_scene
+	if root == null:
+		root = get_parent()
+
+	if root != null:
+		root.add_child(item)
+	else:
+		item.queue_free()
+
+func _get_dev_spawn_position() -> Vector3:
+	var fallback := camera.global_position + (-camera.global_transform.basis.z * max(dev_spawn_distance, 1.2))
+
+	if interact_ray == null:
+		return fallback
+
+	interact_ray.force_raycast_update()
+	if not interact_ray.is_colliding():
+		return fallback
+
+	var hit_point := interact_ray.get_collision_point()
+	var hit_normal := interact_ray.get_collision_normal()
+	var spawn_pos := hit_point + (hit_normal * dev_spawn_surface_offset)
+
+	var from_player := spawn_pos - global_position
+	if from_player.length() < 1.0:
+		spawn_pos = global_position + from_player.normalized() * 1.0
+
+	return spawn_pos
 
 func _physics_process(delta: float) -> void:
 	if interact_ray != null:
