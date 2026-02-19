@@ -29,7 +29,6 @@ class_name Player
 @export var dev_spawn_item_action: StringName = &"dev_spawn_item"
 @export var dev_spawn_scene: PackedScene = preload("res://Props/TestPickup.tscn")
 @export_range(0.5, 10.0, 0.1) var dev_spawn_distance: float = 1.5
-@export_range(0.05, 1.0, 0.05) var dev_spawn_surface_offset: float = 0.2
 
 
 var inventory: Inventory
@@ -194,7 +193,7 @@ func _spawn_dev_item() -> void:
 		return
 
 	var item := spawned as Node3D
-	var spawn_position := _get_dev_spawn_position()
+	var spawn_position := global_position + (-global_transform.basis.z * dev_spawn_distance)
 	item.global_position = spawn_position
 
 	var root := get_tree().current_scene
@@ -205,26 +204,6 @@ func _spawn_dev_item() -> void:
 		root.add_child(item)
 	else:
 		item.queue_free()
-
-func _get_dev_spawn_position() -> Vector3:
-	var fallback := camera.global_position + (-camera.global_transform.basis.z * max(dev_spawn_distance, 1.2))
-
-	if interact_ray == null:
-		return fallback
-
-	interact_ray.force_raycast_update()
-	if not interact_ray.is_colliding():
-		return fallback
-
-	var hit_point := interact_ray.get_collision_point()
-	var hit_normal := interact_ray.get_collision_normal()
-	var spawn_pos := hit_point + (hit_normal * dev_spawn_surface_offset)
-
-	var from_player := spawn_pos - global_position
-	if from_player.length() < 1.0:
-		spawn_pos = global_position + from_player.normalized() * 1.0
-
-	return spawn_pos
 
 func _physics_process(delta: float) -> void:
 	if interact_ray != null:
