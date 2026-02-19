@@ -24,7 +24,8 @@ class_name Player
 # Interação
 @export_range(0.5, 6.0, 0.1) var interact_distance: float = 2.5
 @export var interact_mask: int = 2 # por padrão, layer 2
-@export var interact_action: StringName = &"interact_button"
+@export var interact_action: StringName = &"interact"
+@export var inventory_toggle_action: StringName = &"inventory_toggle"
 
 
 var inventory: Inventory
@@ -57,15 +58,17 @@ var jump_vel: Vector3
 
 func _ready() -> void:
 	inventory = Inventory.new()
+	inventory.name = "Inventory"
 	add_child(inventory)
 
 	inventory_ui = InventoryUI.new()
+	inventory_ui.name = "InventoryUI"
 	add_child(inventory_ui)
 
 	inventory_ui.bind_inventory(inventory)
 
-
-
+	if not InputMap.has_action(inventory_toggle_action):
+		InputMap.add_action(inventory_toggle_action)
 
 	_camera_base_y = camera.position.y
 	_camera_base_x = camera.position.x
@@ -160,6 +163,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		look_dir = event.relative * 0.001
 		if mouse_captured:
 			_rotate_camera()
+
+	if InputMap.has_action(inventory_toggle_action) and Input.is_action_just_pressed(inventory_toggle_action):
+		inventory_ui.set_open(not inventory_ui.visible)
+		if inventory_ui.visible:
+			release_mouse()
+		else:
+			capture_mouse()
 
 	if Input.is_action_just_pressed(&"exit"):
 		get_tree().quit()
